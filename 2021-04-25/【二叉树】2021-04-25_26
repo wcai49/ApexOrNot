@@ -5,15 +5,15 @@
 二叉树有广度遍历和深度遍历两类方式, 广度遍历就是最好理解的层次遍历, 从上到下, 从左到右的顺序遍历整个树; 深度遍历就有前序, 中序, 后续 (pre order, in order, post order)三种.
 用简单的三个图来展示这三种深度遍历的规则:
 
-![preoder.png](https://note.youdao.com/yws/res/1/WEBRESOURCEf0f87cd1ddc60e19af6e11cc7646cad1)
+![preoder.png](https://github.com/wcai49/ApexOrNot/blob/oldCai/2021-04-25/preOrder.png)
 
-![inorder.png](https://note.youdao.com/yws/res/f/WEBRESOURCE25b3ad603a1972c2ab46378d4a629a6f)
+![inorder.png](https://github.com/wcai49/ApexOrNot/blob/oldCai/2021-04-25/inOrder.png)
 
-![postorder.png](https://note.youdao.com/yws/res/c/WEBRESOURCEdf7633fca0e822945e19fc58c44cc85c)
+![postorder.png](https://github.com/wcai49/ApexOrNot/blob/oldCai/2021-04-25/postOrder.png)
 ### 图示
 图例1：
 
-![递增顺序搜索树示例1.png](https://note.youdao.com/yws/res/d/WEBRESOURCE092bed5d1519ebb093270d07a6d842bd)
+![递增顺序搜索树示例1.png](https://github.com/wcai49/ApexOrNot/blob/oldCai/2021-04-25/figure1.png)
 
 **对于二叉搜索树，该图例的输入root即为:[5, 3, 6, 2, 4, null, 8, 1, null, null, null, 7, 9];**
 
@@ -21,7 +21,7 @@
 
 图例2：
 
-![递增顺序搜索树示例2.png](http://note.youdao.com/yws/res/52/WEBRESOURCE98653da092e64e9863eea331c4bfe98f)
+![递增顺序搜索树示例2.png](https://github.com/wcai49/ApexOrNot/blob/oldCai/2021-04-25/figure2.png)
 
 **该图例的root输入为: [5, 1, 7]；**
 **需求输出为:[1, null, 5, null, 7]。**
@@ -78,11 +78,49 @@ const reOrderTN = function(treenodes, array) {
 ```
 
 #### 提交结果
-![递增顺序搜索树——题解1结果.png](https://note.youdao.com/yws/res/d/WEBRESOURCEa29683dd68ddad63dd74a37a3242dd8d)
+![递增顺序搜索树——题解1结果.png](https://github.com/wcai49/ApexOrNot/blob/oldCai/2021-04-25/result1.PNG)
 
-可以看到， 由于遍历了一遍二叉树，又递归了整个树去排序，导致用时较长；同时，因为生成了新的Array，又用到了工具人toolTree，导致内存占用也比较高。怎样才能优化呢？
+此方法首先中序遍历了整个树，接着遍历Array去生成新的树；
 
 ### 题解2
-#### 图示
+#### 解题思路： 
+同样是需要中序遍历，能不能在递归的过程中顺便把树的结构调整好呢？
 #### 代码片
+
+```js
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right = (right===undefined ? null : right)
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {TreeNode}
+ */
+var increasingBST = function(root) {
+    let resultTree = new TreeNode(-1);
+    let toolTree = resultTree;
+    
+    const inOrder = (node) => {
+        if(node === null) {
+            return;
+        }
+        
+        inOrder(node.left);
+        
+        toolTree.right = node;
+        node.left = null;
+        toolTree = node;
+        
+        inOrder(node.right);    
+    }
+    
+    inOrder(root);
+    return resultTree.right;
+}
+```
 #### 提交结果
+![result2.png](https://github.com/wcai49/ApexOrNot/blob/oldCai/2021-04-25/result2.PNG)
