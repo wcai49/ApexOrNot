@@ -118,3 +118,71 @@ lengthOfLongestSubstring("")
     0
 
 
+
+## [Daily Challenge. JumpGame2](https://leetcode.com/explore/challenge/card/may-leetcoding-challenge-2021/598/week-1-may-1st-may-7th/3732/)
+
+*2021/05/05*
+
+Given an array of non-negative integers `nums`, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Your goal is to reach the last index in the minimum number of jumps.
+
+You can assume that you can always reach the last index.
+
+### Note
+- 遍历数组，计算每一段元素组中最远能到达的位置currFarthest
+- 每遍历完一段元素组之后，将下一个元素组的末端设置为该段最远能到达的位置（currEnd = currFarthest），并且计步
+
+### Code
+
+
+```python
+def jump(nums) -> int:
+    currEnd = currFarthest = jump = 0
+    l = len(nums)
+    for i in range(l-1):
+        currFarthest = max(currFarthest, i + nums[i])
+        if i == currEnd:
+            jump+=1
+            currEnd = currFarthest
+    return jump
+```
+
+### Examples
+#### 1
+```
+Input: nums = [2,3,1,1,4]
+Output: 2
+```
+
+
+```python
+jump([2,3,1,1,4])
+```
+
+
+
+
+    2
+
+
+
+#### 2
+```
+Input: nums = [2,3,0,1,4]
+Output: 2
+```
+
+
+```python
+jump([2,3,0,1,4])
+```
+
+
+
+
+    2
+
+
